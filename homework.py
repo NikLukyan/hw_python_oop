@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Sequence, Dict
+from typing import Optional, Dict, List, Type
 
 
 @dataclass
@@ -119,6 +119,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
+        raise NotImplementedError
 
     def show_training_info(self) -> InfoMessage:
         """Возвращает информационное сообщение о выполненной тренировке.
@@ -385,7 +386,7 @@ class Swimming(Training):
 
 
 def read_package(workout_type: str,
-                 data: Sequence[float]
+                 data: List[float]
                  ) -> Optional[Training]:
     """Прочитать данные полученные от датчиков.
 
@@ -407,9 +408,9 @@ def read_package(workout_type: str,
     необходимые параметры из списка data
     """
 
-    code_class: Dict[str, Training] = {'SWM': Swimming,
-                                       'RUN': Running,
-                                       'WLK': SportsWalking}
+    code_class: Dict[str, Type[Training]] = {'SWM': Swimming,
+                                             'RUN': Running,
+                                             'WLK': SportsWalking}
     return code_class[workout_type](*data)
 
 
